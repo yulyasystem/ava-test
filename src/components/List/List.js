@@ -7,7 +7,7 @@ export function List({ items, setView, setCharacterData }) {
     <div className='list'>
       {items &&
         items.map((data, index) => {
-          //   console.log(data);
+          // console.log(data);
           return (
             <Card
               setView={setView}

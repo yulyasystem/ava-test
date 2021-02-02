@@ -21,10 +21,6 @@ export function Card({ url, eye, name, setView, data, setCharacterData }) {
   return (
     <div onClick={handleCardClick} className='card'>
       <h4>{name}</h4>
-      {/* <p>Species: </p>
-      <p>Movies: </p>
-      <p>Spaceships: </p> */}
-      {/* <p>My eye color: {eye} </p> */}
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import "./SingleCharacter.scss";
 
-export function SingleCharacter({ characterData, setView }) {
+export function SingleCharacter({ characterData, setView, setCharacterData }) {
   const { name, species, starships, films } = characterData;
   const [character, setCharacter] = useState({});
 
-  function getData(urls, name) {
+  function getData(urls) {
     if (!urls.length) {
       return [];
     }
@@ -17,12 +17,13 @@ export function SingleCharacter({ characterData, setView }) {
 
   useEffect(async () => {
     const allData = await Promise.all([
-      getData(films, "films"),
-      getData(species, "species"),
-      getData(starships, "starships"),
+      getData(films),
+      getData(species),
+      getData(starships),
     ]);
 
     setCharacter({ films: allData[0], species: allData[1], starships: allData[2] });
+    setCharacterData({ films: allData[0], species: allData[1], starships: allData[2] });
   }, []);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export function SingleCharacter({ characterData, setView }) {
           </div>
           <div>
             <b>Starships: </b>
-            {character.films.length
+            {character.starships.length
               ? character.starships.map((starship, index) => (
                   <p key={index}> {starship.name}</p>
                 ))
