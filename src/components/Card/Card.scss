@@ -1,0 +1,30 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 30px;
+  background-color: #c1dedc;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(233, 245, 233);
+  }
+
+  a {
+    color: #000000;
+  }
+
+  h4 {
+    letter-spacing: -0.4px;
+    margin: 0;
+  }
+
+  &:nth-child(2n) {
+    background-color: #f0edea;
+  }
+
+  &:nth-child(3n) {
+    background-color: #e6def0;
+  }
+}
