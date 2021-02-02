@@ -11,6 +11,7 @@ export function Filters() {
       <div className='filter-icon'>
         <img src={icon} />
         <p>Filters</p>
+        <div className='movie-filter'></div>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import "./Card.scss";
 //   return id;
 // }
 
-export function Card({ url, eye, name, setView }) {
+export function Card({ url, eye, name, setView, data, setCharacterData }) {
   //   const id = parseItemId(url);
 
   //   function handleDelete() {
@@ -15,6 +15,7 @@ export function Card({ url, eye, name, setView }) {
   //   }
   function handleCardClick() {
     setView(true);
+    setCharacterData(data);
   }
 
   return (

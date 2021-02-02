@@ -5,7 +5,7 @@ import { List } from "../List/List";
 import { ALL_CHARACTERS_API } from "../../constants/api";
 import "./AllCharacters.scss";
 
-export function AllCharacters({ setView }) {
+export function AllCharacters({ setView, setCharacterData }) {
   const [characters, setCharacters] = useState([]);
   useEffect(() => {
     fetch(ALL_CHARACTERS_API(1))
@@ -21,7 +21,7 @@ export function AllCharacters({ setView }) {
     <div className='characters-wrapper'>
       <Filters />
       <h2>All Characters List</h2>
-      {<List setView={setView} items={characters} />}
+      {<List setView={setView} items={characters} setCharacterData={setCharacterData} />}
     </div>
   );
 }
