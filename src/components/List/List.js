@@ -2,9 +2,6 @@ import "./List.scss";
 import { Card } from "../Card/Card";
 
 export function List({ items, setDraggedItem, onDrop, onDragEnter, onDragOver }) {
-  // fo from list to favorites list
-  // items - favorites
-
   return (
     <div
       onDrop={onDrop}

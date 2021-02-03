@@ -1,20 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Filters } from "../Filter/Filters";
 import { List } from "../List/List";
 import { Favorites } from "../Favorites/Favorites";
 
-import { ALL_CHARACTERS_API } from "../../constants/api";
 import "./AllCharacters.scss";
+
+import { ALL_CHARACTERS_API } from "../../constants/api";
+import { getCharacterIdFromUrl } from "../../utils/getCharacterIdFromUrl";
 
 export function AllCharacters({}) {
   const [characters, setCharacters] = useState([]);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [draggedItem, setDraggedItem] = useState(null);
-  // TODO: set from local storage with React.Memo
-  const [favorites, setFavorites] = useState([]);
 
+  const [favorites, setFavorites] = useState([]);
   const [page, setPage] = useState(1);
   const [isNext, setIsNext] = useState(false);
+
+  let persistedCharacters = useMemo(() => getFavoritesFromLocalStorage());
+
+  function getFavoritesFromLocalStorage() {
+    const charactersId = JSON.parse(localStorage.getItem("characters"));
+
+    if (!charactersId) {
+      return [];
+    } else {
+      return charactersId;
+    }
+  }
 
   const initialValues = {
     films: [
@@ -56,8 +69,14 @@ export function AllCharacters({}) {
         (speciesLink) => speciesData[speciesLinks.indexOf(speciesLink)].name
       ),
       isDraggable: true,
+      id: getCharacterIdFromUrl(character.url),
     }));
 
+    const favoritesArr = charactersUpgraded.filter((character) => {
+      return persistedCharacters.includes(character.id);
+    });
+
+    setFavorites([...favorites, ...favoritesArr]);
     return { ...data, results: charactersUpgraded };
   }
 
@@ -70,6 +89,7 @@ export function AllCharacters({}) {
       .then((data) => {
         setCharacters([...characters, ...data.results]);
         setFilteredCharacters([...characters, ...data.results]);
+
         setIsNext(Boolean(data.next));
         if (page < 3) {
           setPage(page + 1);
@@ -135,25 +155,33 @@ export function AllCharacters({}) {
 
   function onDropHandler(e) {
     e.preventDefault();
-    let deletedCharacterName;
+    let deletedCharacter;
 
     const updatedFavorites = favorites.filter((character) => {
       if (character.name === draggedItem.name) {
-        deletedCharacterName = draggedItem.name;
+        deletedCharacter = draggedItem;
         character.isDraggable = true;
       }
       return character.name !== draggedItem.name;
     });
 
     const updatedFilteredCharacters = filteredCharacters.map((character) => {
-      if (character.name === deletedCharacterName) {
+      if (character.name === deletedCharacter.name) {
         character.isDraggable = true;
       }
       return character;
     });
 
+    deleteCharacterIdFromLocalStorage(deletedCharacter.id);
+
     setFavorites(updatedFavorites);
     setFilteredCharacters(updatedFilteredCharacters);
+  }
+
+  function deleteCharacterIdFromLocalStorage(id) {
+    const charactersId = JSON.parse(localStorage.getItem("characters"));
+    const filteredArr = charactersId.filter((item) => item !== id);
+    localStorage.setItem("characters", JSON.stringify(filteredArr));
   }
 
   function dragOverHandler(e) {
