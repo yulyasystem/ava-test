@@ -17,7 +17,6 @@ export function SingleCharacter() {
       })
       .then(getIntermediateResults)
       .then((data) => {
-        console.log(data);
         setCharacter(data);
       });
   }, []);

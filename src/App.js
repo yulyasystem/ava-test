@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Header } from "./components/Header/Header";
-import { Main } from "./components/Main/Main";
+import { AllCharacters } from "./components/AllCharacters/AllCharacters";
 import { SingleCharacter } from "./components/SingleCharacter/SingleCharacter";
 import "./App.scss";
 
@@ -12,7 +12,7 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path={HOME_ROUTE} component={Main} />
+          <Route exact path={HOME_ROUTE} component={AllCharacters} />
           <Route path={CHARACTER_ROUTE()} component={SingleCharacter} />
         </Switch>
       </Router>

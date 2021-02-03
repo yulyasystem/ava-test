@@ -5,7 +5,11 @@
   border-radius: 30px;
   background-color: #c1dedc;
 
-  cursor: pointer;
+  cursor: grab;
+
+  &.not-draggable {
+    cursor: pointer;
+  }
 
   &:hover {
     background-color: #d9f8f6;

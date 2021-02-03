@@ -9,7 +9,8 @@ function parseItemId(url) {
   return id;
 }
 
-export function Card({ url, name }) {
+export function Card({ card, setDraggedItem }) {
+  const { isDraggable, name, url } = card;
   const id = parseItemId(url);
 
   //   function handleDelete() {
@@ -18,8 +19,21 @@ export function Card({ url, name }) {
   //     localStorage.setItem("characters", JSON.stringify(filteredArr));
   //   }
 
+  function dragStartHandler() {
+    setDraggedItem(card);
+  }
+
+  function dragEndHandler() {
+    setDraggedItem(null);
+  }
+
   return (
-    <Link to={CHARACTER_ROUTE(id)} className='card'>
+    <Link
+      draggable={isDraggable}
+      onDragStart={dragStartHandler}
+      onDragEnd={dragEndHandler}
+      to={CHARACTER_ROUTE(id)}
+      className={isDraggable ? "card" : "card not-draggable"}>
       <h4>{name}</h4>
     </Link>
   );

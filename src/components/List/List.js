@@ -1,13 +1,19 @@
 import "./List.scss";
 import { Card } from "../Card/Card";
 
-export function List({ items }) {
+export function List({ items, setDraggedItem, onDrop, onDragEnter, onDragOver }) {
+  // fo from list to favorites list
+  // items - favorites
+
   return (
-    <div className='list'>
+    <div
+      onDrop={onDrop}
+      onDragOver={onDragOver}
+      onDragEnter={onDragEnter}
+      className='list'>
       {items &&
         items.map((data, index) => {
-          // console.log(data);
-          return <Card name={data.name} key={index} url={data.url} />;
+          return <Card card={data} key={index} setDraggedItem={setDraggedItem} />;
         })}
     </div>
   );

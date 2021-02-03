@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Filters } from "../Filter/Filters";
 import { List } from "../List/List";
+import { Favorites } from "../Favorites/Favorites";
 
 import { ALL_CHARACTERS_API } from "../../constants/api";
 import "./AllCharacters.scss";
@@ -8,6 +9,9 @@ import "./AllCharacters.scss";
 export function AllCharacters({}) {
   const [characters, setCharacters] = useState([]);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
+  const [draggedItem, setDraggedItem] = useState(null);
+  // TODO: set from local storage with React.Memo
+  const [favorites, setFavorites] = useState([]);
 
   const [page, setPage] = useState(1);
   const [isNext, setIsNext] = useState(false);
@@ -51,6 +55,7 @@ export function AllCharacters({}) {
       species: character.species.map(
         (speciesLink) => speciesData[speciesLinks.indexOf(speciesLink)].name
       ),
+      isDraggable: true,
     }));
 
     return { ...data, results: charactersUpgraded };
@@ -82,7 +87,6 @@ export function AllCharacters({}) {
       //transform digit to negative
       digitAge = -Math.abs(digitAge);
     }
-    // console.log(digitAge, min, max);
     if (min === filterValues.age.min && max === filterValues.age.max) {
       return true;
     }
@@ -129,18 +133,71 @@ export function AllCharacters({}) {
     setPage(page + 1);
   }
 
+  function onDropHandler(e) {
+    e.preventDefault();
+    let deletedCharacterName;
+
+    const updatedFavorites = favorites.filter((character) => {
+      if (character.name === draggedItem.name) {
+        deletedCharacterName = draggedItem.name;
+        character.isDraggable = true;
+      }
+      return character.name !== draggedItem.name;
+    });
+
+    const updatedFilteredCharacters = filteredCharacters.map((character) => {
+      if (character.name === deletedCharacterName) {
+        character.isDraggable = true;
+      }
+      return character;
+    });
+
+    setFavorites(updatedFavorites);
+    setFilteredCharacters(updatedFilteredCharacters);
+  }
+
+  function dragOverHandler(e) {
+    e.preventDefault();
+  }
+
+  function dragEnterHandler(e) {
+    e.preventDefault();
+  }
+
   return (
-    <div className='characters-wrapper'>
-      <Filters
-        filterValues={filterValues}
-        setFilterValues={setFilterValues}
-        onChange={onChange}
+    <div className='main-view'>
+      <main className='main'>
+        <div className='characters-wrapper'>
+          <Filters
+            filterValues={filterValues}
+            setFilterValues={setFilterValues}
+            onChange={onChange}
+          />
+          <h2>All Characters List</h2>
+
+          {filteredCharacters.length ? (
+            <List
+              setDraggedItem={setDraggedItem}
+              items={filteredCharacters}
+              onDrop={onDropHandler}
+              onDragEnter={dragEnterHandler}
+              onDragOver={dragOverHandler}
+            />
+          ) : (
+            "Loading"
+          )}
+
+          {isNext && <button onClick={handleLoad}>Load More</button>}
+        </div>
+      </main>
+      <Favorites
+        favorites={favorites}
+        setFavorites={setFavorites}
+        draggedItem={draggedItem}
+        characters={filteredCharacters}
+        setCharacters={setFilteredCharacters}
+        setDraggedItem={setDraggedItem}
       />
-      <h2>All Characters List</h2>
-
-      {filteredCharacters.length ? <List items={filteredCharacters} /> : "Loading"}
-
-      {isNext && <button onClick={handleLoad}>Load More</button>}
     </div>
   );
 }
