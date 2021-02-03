@@ -149,8 +149,19 @@ export function AllCharacters({}) {
     [filterValues]
   );
 
-  function onChange(range) {
+  function onChangeRange(range) {
     setFilterValues({ ...filterValues, age: { ...filterValues.age, value: range } });
+  }
+
+  function onChangeCheckbox({ target }, values) {
+    let newValues = values;
+    newValues.forEach((item) => {
+      if (item.value === target.value) {
+        item.isChecked = target.checked;
+      }
+    });
+
+    setFilterValues({ ...filterValues, [values]: newValues });
   }
   function handleLoad() {
     setPage(page + 1);
@@ -202,7 +213,8 @@ export function AllCharacters({}) {
           <Filters
             filterValues={filterValues}
             setFilterValues={setFilterValues}
-            onChange={onChange}
+            onChangeRange={onChangeRange}
+            onChangeCheckbox={onChangeCheckbox}
           />
           <h2>All Characters List</h2>
 

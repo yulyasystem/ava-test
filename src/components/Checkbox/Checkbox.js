@@ -1,11 +1,11 @@
-export function Checkbox({ id, value, isChecked, onChange }) {
+export function Checkbox({ id, value, isChecked, onChange, items }) {
   return (
     <li>
       <input
         key={id}
         type='checkbox'
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange(e, items)}
         checked={isChecked}></input>
       {value}
     </li>
