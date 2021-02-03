@@ -1,22 +1,13 @@
 import "./List.scss";
 import { Card } from "../Card/Card";
 
-export function List({ items, setView, setCharacterData }) {
-  //   console.log(items);
+export function List({ items }) {
   return (
     <div className='list'>
       {items &&
         items.map((data, index) => {
           // console.log(data);
-          return (
-            <Card
-              setView={setView}
-              data={data}
-              name={data.name}
-              key={index}
-              setCharacterData={setCharacterData}
-            />
-          );
+          return <Card name={data.name} key={index} url={data.url} />;
         })}
     </div>
   );

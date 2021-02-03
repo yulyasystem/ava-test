@@ -1,9 +1,11 @@
 .main-view {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  column-gap: 15px;
   background-color: #fff;
   margin-top: 20px;
   padding-top: 50px;
+  padding-bottom: 70px;
   border-top-left-radius: 66px;
   border-top-right-radius: 66px;
   min-height: 800px;

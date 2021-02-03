@@ -5,3 +5,14 @@
     font-weight: 700;
   }
 }
+
+.input-range {
+  padding-top: 58px;
+  width: 70%;
+}
+
+.input-range__label--min,
+.input-range__label--max {
+  bottom: -0.4rem;
+  position: absolute;
+}

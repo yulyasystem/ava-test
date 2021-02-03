@@ -1,14 +1,20 @@
 .single-character {
   padding-left: 40px;
+  padding-top: 40px;
+  background-color: #fff;
+  border-top-left-radius: 66px;
+  border-top-right-radius: 66px;
+  min-height: 600px;
 
-  button {
-    border: none;
+  .back {
     margin: 0;
 
     width: auto;
 
     border-radius: 15px;
-    font-size: 18px;
+    padding: 7px;
+    margin-left: 40px;
+    font-size: 16px;
     background-color: #000000;
     color: #ffffff;
     &:hover {

@@ -1,9 +1,38 @@
 import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import "./SingleCharacter.scss";
 
-export function SingleCharacter({ characterData, setView, setCharacterData }) {
-  const { name, species, starships, films } = characterData;
+import { HOME_ROUTE } from "../../constants/routes";
+import { SINGLE_CHARACTER_API } from "../../constants/api";
+
+export function SingleCharacter() {
+  const { id } = useParams();
+
   const [character, setCharacter] = useState({});
+
+  useEffect(() => {
+    fetch(SINGLE_CHARACTER_API(id))
+      .then((response) => {
+        return response.json();
+      })
+      .then(getIntermediateResults)
+      .then((data) => {
+        console.log(data);
+        setCharacter(data);
+      });
+  }, []);
+
+  async function getIntermediateResults(data) {
+    const { species, starships, films } = data;
+
+    const allData = await Promise.all([
+      getData(films),
+      getData(species),
+      getData(starships),
+    ]);
+
+    return { ...data, films: allData[0], species: allData[1], starships: allData[2] };
+  }
 
   function getData(urls) {
     if (!urls.length) {
@@ -15,33 +44,14 @@ export function SingleCharacter({ characterData, setView, setCharacterData }) {
     );
   }
 
-  useEffect(async () => {
-    const allData = await Promise.all([
-      getData(films),
-      getData(species),
-      getData(starships),
-    ]);
-
-    setCharacter({ films: allData[0], species: allData[1], starships: allData[2] });
-    setCharacterData({ films: allData[0], species: allData[1], starships: allData[2] });
-  }, []);
-
-  useEffect(() => {
-    console.log(character);
-  }, [character]);
-
-  function handleBack() {
-    setView(false);
-  }
-
   return (
-    <>
+    <div className='single-character'>
+      <Link to={HOME_ROUTE} className='back'>
+        ← Back
+      </Link>
       {Object.keys(character).length ? (
         <div className='single-character'>
-          <button className='back' onClick={handleBack}>
-            ← Back
-          </button>
-          <h3>{name}</h3>
+          <h3>{character.name}</h3>
 
           <div>
             <b>Films: </b>
@@ -71,6 +81,6 @@ export function SingleCharacter({ characterData, setView, setCharacterData }) {
       ) : (
         <p className='loading'>loading...</p>
       )}
-    </>
+    </div>
   );
 }

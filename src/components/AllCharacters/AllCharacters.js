@@ -5,7 +5,7 @@ import { List } from "../List/List";
 import { ALL_CHARACTERS_API } from "../../constants/api";
 import "./AllCharacters.scss";
 
-export function AllCharacters({ setView, setCharacterData }) {
+export function AllCharacters({}) {
   const [characters, setCharacters] = useState([]);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
 
@@ -57,22 +57,20 @@ export function AllCharacters({ setView, setCharacterData }) {
   }
 
   useEffect(() => {
-    fetch(ALL_CHARACTERS_API(1))
+    fetch(ALL_CHARACTERS_API(page))
       .then((response) => {
         return response.json();
       })
       .then(getherMoreCharactersData)
       .then((data) => {
-        console.log(data);
         setCharacters([...characters, ...data.results]);
         setFilteredCharacters([...characters, ...data.results]);
         setIsNext(Boolean(data.next));
-        if (page < 2) {
+        if (page < 3) {
           setPage(page + 1);
         }
       });
-  }, []);
-  //TODO:filterValues.age.value add to dependecies
+  }, [page]);
 
   function filterByRange(character) {
     const { max, min } = filterValues.age.value;
@@ -127,6 +125,9 @@ export function AllCharacters({ setView, setCharacterData }) {
   function onChange(range) {
     setFilterValues({ ...filterValues, age: { ...filterValues.age, value: range } });
   }
+  function handleLoad() {
+    setPage(page + 1);
+  }
 
   return (
     <div className='characters-wrapper'>
@@ -136,15 +137,10 @@ export function AllCharacters({ setView, setCharacterData }) {
         onChange={onChange}
       />
       <h2>All Characters List</h2>
-      {filteredCharacters.length ? (
-        <List
-          setView={setView}
-          items={filteredCharacters}
-          setCharacterData={setCharacterData}
-        />
-      ) : (
-        "Loading"
-      )}
+
+      {filteredCharacters.length ? <List items={filteredCharacters} /> : "Loading"}
+
+      {isNext && <button onClick={handleLoad}>Load More</button>}
     </div>
   );
 }

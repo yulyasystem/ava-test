@@ -8,11 +8,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: rgb(233, 245, 233);
-  }
-
-  a {
-    color: #000000;
+    background-color: #d9f8f6;
   }
 
   h4 {
@@ -22,9 +18,22 @@
 
   &:nth-child(2n) {
     background-color: #f0edea;
+
+    &:hover {
+      background-color: #fcf7f3;
+    }
   }
 
   &:nth-child(3n) {
     background-color: #e6def0;
+
+    &:hover {
+      background-color: #f5eeff;
+    }
   }
+}
+
+a {
+  color: #000000;
+  text-decoration: none;
 }

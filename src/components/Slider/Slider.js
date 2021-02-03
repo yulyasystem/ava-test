@@ -8,7 +8,9 @@ export function Slider({ min, max, step, value, label, onChange }) {
     <div className='slider'>
       <label>{label}</label>
       <InputRange
-        formatLabel={(value) => (value > 0 ? `${value} ABY` : `${value} BBY`)}
+        formatLabel={(value) =>
+          value > 0 ? `${Math.abs(value)} ABY` : `${Math.abs(value)} BBY`
+        }
         minValue={min}
         maxValue={max}
         step={step}
