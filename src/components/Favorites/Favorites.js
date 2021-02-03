@@ -1,6 +1,8 @@
 import { List } from "../List/List";
 import "./Favorites.scss";
 
+import { addFavoriteToLocalStorage } from "../../utils/character";
+
 export function Favorites({
   favorites,
   setFavorites,
@@ -9,14 +11,6 @@ export function Favorites({
   setCharacters,
   setDraggedItem,
 }) {
-  function addFavoriteToLocalStorage(id) {
-    let charactersId = [];
-
-    charactersId = JSON.parse(localStorage.getItem("characters")) || [];
-    charactersId.push(id);
-    localStorage.setItem("characters", JSON.stringify(charactersId));
-  }
-
   function onDropHandler(e) {
     e.preventDefault();
 

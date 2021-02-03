@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./Card.scss";
 
 import { CHARACTER_ROUTE } from "../../constants/routes";
-import { getCharacterIdFromUrl } from "../../utils/getCharacterIdFromUrl";
+import { getCharacterIdFromUrl } from "../../utils/character";
 
 export function Card({ card, setDraggedItem }) {
   const { isDraggable, name, url } = card;

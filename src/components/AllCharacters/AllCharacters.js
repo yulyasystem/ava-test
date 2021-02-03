@@ -6,45 +6,23 @@ import { Favorites } from "../Favorites/Favorites";
 import "./AllCharacters.scss";
 
 import { ALL_CHARACTERS_API } from "../../constants/api";
-import { getCharacterIdFromUrl } from "../../utils/getCharacterIdFromUrl";
+import {
+  getCharacterIdFromUrl,
+  getFavoritesFromLocalStorage,
+} from "../../utils/character";
+
+import { initialFilterValues } from "../../constants/static";
 
 export function AllCharacters({}) {
   const [characters, setCharacters] = useState([]);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [draggedItem, setDraggedItem] = useState(null);
-
   const [favorites, setFavorites] = useState([]);
   const [page, setPage] = useState(1);
   const [isNext, setIsNext] = useState(false);
+  const [filterValues, setFilterValues] = useState(initialFilterValues);
 
   let persistedCharacters = useMemo(() => getFavoritesFromLocalStorage());
-
-  function getFavoritesFromLocalStorage() {
-    const charactersId = JSON.parse(localStorage.getItem("characters"));
-
-    if (!charactersId) {
-      return [];
-    } else {
-      return charactersId;
-    }
-  }
-
-  const initialValues = {
-    films: [
-      { id: 0, value: "A New Hope", isChecked: false },
-      { id: 1, value: "The Empire Strikes Back", isChecked: false },
-      { id: 2, value: "Return of the Jedi", isChecked: false },
-      { id: 3, value: "The Phantom Menace", isChecked: false },
-    ],
-    species: [
-      { id: 4, value: "Droid", isChecked: false },
-      { id: 5, value: "Sullustan", isChecked: false },
-      { id: 6, value: "Human", isChecked: false },
-    ],
-    age: { label: "Age", min: -80, max: 100, step: 1, value: { min: -80, max: 100 } },
-  };
-
-  const [filterValues, setFilterValues] = useState(initialValues);
 
   // additional data as movies and species needed for further filtering
   async function getherMoreCharactersData(data) {
@@ -92,8 +70,8 @@ export function AllCharacters({}) {
       .then((data) => {
         setCharacters([...characters, ...data.results]);
         setFilteredCharacters([...characters, ...data.results]);
-
         setIsNext(Boolean(data.next));
+
         if (page < 3) {
           setPage(page + 1);
         }

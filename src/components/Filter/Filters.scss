@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  .group-filter {
+    display: flex;
+    margin-top: 20px;
+
+    .species-filter {
+      margin-left: 30px;
+    }
+  }
   .filter-icon {
     display: flex;
 
